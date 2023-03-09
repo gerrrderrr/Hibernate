@@ -1,6 +1,5 @@
 package ru.netology.hibernate.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import ru.netology.hibernate.advice.exceptions.PersonNotFound;
 import ru.netology.hibernate.advice.response.HibernateResponse;
@@ -16,32 +15,20 @@ import java.util.stream.Collectors;
 @Service
 public class HibernateService {
     private final HibernateRepository repository;
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final PersonMapper mapper = new PersonMapper();
 
     public HibernateService(HibernateRepository repository) {
         this.repository = repository;
     }
 
     public PersonDTO createNewPerson(PersonDTO dto) {
-        Person person = repository.save(mapPersonDtoToPersonEntity(dto));
-        return mapPersonEntityToPersonDto(person);
-    }
-
-    private Person mapPersonDtoToPersonEntity(PersonDTO dto) {
-        return mapper.convertValue(dto, Person.class);
-    }
-
-    private PersonDTO mapPersonEntityToPersonDto(Person person) {
-        return mapper.convertValue(person, PersonDTO.class);
+        Person person = repository.save(mapper.mapPersonDtoToPersonEntity(dto));
+        return mapper.mapPersonEntityToPersonDto(person);
     }
 
     public List<PersonDTO> getAllPersons() {
         List<Person> persons = repository.findAll();
-        return mapListOfPersonToPersonDTO(persons);
-    }
-
-    private List<PersonDTO> mapListOfPersonToPersonDTO(List<Person> persons) {
-        return persons.stream().map(x -> mapper.convertValue(x, PersonDTO.class)).collect(Collectors.toList());
+        return mapper.mapListOfPersonToPersonDTO(persons);
     }
 
     public HibernateResponse updatePersonPhone(PersonId id, String phoneNumber) {
@@ -76,19 +63,19 @@ public class HibernateService {
 
     public List<PersonDTO> getPersonsByCity(String city) {
         List<Person> persons = repository.findByCityOfLivingIgnoreCase(city);
-        return mapListOfPersonToPersonDTO(persons);
+        return mapper.mapListOfPersonToPersonDTO(persons);
     }
 
     public List<PersonDTO> getPersonsByAge(int age) {
-        List<Person> persons = repository.findByAgeBeforeOrderByAgeAsc(age);
-        return mapListOfPersonToPersonDTO(persons);
+        List<Person> persons = repository.findByAgeLessThanOrderByAgeAsc(age);
+        return mapper.mapListOfPersonToPersonDTO(persons);
     }
 
     public List<PersonDTO> getPersonsByNameAndSurname(String name, String surname) {
         Optional<Person> persons = repository.findByNameIgnoreCaseAndSurnameIgnoreCase(name, surname);
         List<PersonDTO> dto = null;
         if (persons.isPresent()) {
-            dto = mapListOfPersonToPersonDTO(persons.stream().collect(Collectors.toList()));
+            dto = mapper.mapListOfPersonToPersonDTO(persons.stream().collect(Collectors.toList()));
         }
         return dto;
     }
