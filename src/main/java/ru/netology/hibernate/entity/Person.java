@@ -28,7 +28,7 @@ public class Person {
     @Column(nullable = false)
     private int age;
 
-    @Column(name = "phone_number", nullable = false, length = 50)
+    @Column(name = "phone_number", nullable = false, length = 11)
     private String phoneNumber;
 
     @Column(name = "city_of_living", nullable = false, length = 50)
