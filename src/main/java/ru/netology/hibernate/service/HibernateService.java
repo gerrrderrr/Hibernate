@@ -75,17 +75,17 @@ public class HibernateService {
     }
 
     public List<PersonDTO> getPersonsByCity(String city) {
-        List<Person> persons = repository.findByCityOfLivingIgnoreCase(city);
+        List<Person> persons = repository.getPersonsByCity(city);
         return mapListOfPersonToPersonDTO(persons);
     }
 
     public List<PersonDTO> getPersonsByAge(int age) {
-        List<Person> persons = repository.findByAgeBeforeOrderByAgeAsc(age);
+        List<Person> persons = repository.getPersonsYoungerGivenAge(age);
         return mapListOfPersonToPersonDTO(persons);
     }
 
     public List<PersonDTO> getPersonsByNameAndSurname(String name, String surname) {
-        Optional<Person> persons = repository.findByNameIgnoreCaseAndSurnameIgnoreCase(name, surname);
+        Optional<Person> persons = repository.getPersonsByNameAndSurname(name, surname);
         List<PersonDTO> dto = null;
         if (persons.isPresent()) {
             dto = mapListOfPersonToPersonDTO(persons.stream().collect(Collectors.toList()));
