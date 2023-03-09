@@ -13,7 +13,7 @@ public interface HibernateRepository extends JpaRepository<Person, PersonId> {
 
     List<Person> findByCityOfLivingIgnoreCase(String city);
 
-    List<Person> findByAgeBeforeOrderByAgeAsc(int age);
+    List<Person> findByAgeLessThanOrderByAgeAsc(int age);
 
     Optional<Person> findByNameIgnoreCaseAndSurnameIgnoreCase(String name, String surname);
 }
