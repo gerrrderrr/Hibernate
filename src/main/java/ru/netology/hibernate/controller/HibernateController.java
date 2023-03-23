@@ -17,8 +17,8 @@ public class HibernateController {
         this.service = service;
     }
 
-    @PostMapping("/create")
-    public PersonDTO createNewPerson(@RequestBody PersonDTO dto) {
+    @PostMapping("/create-new-person")
+    public PersonDTO createNewPerson(@ModelAttribute PersonDTO dto) {
         return service.createNewPerson(dto);
     }
 

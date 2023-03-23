@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<body style="background: lightgray; font-family: Arial,serif; color: dimgray">
+<div class="block">
+    <style>
+        .block {
+            background: honeydew;
+            padding: 30px;
+            width: fit-content;
+            margin: auto;
+            border-radius: 5px;
+            box-shadow: 0 0 5px 2px darkgray;
+        }
+        input{
+            border-radius: 8px;
+            border-color: lavender;
+            box-shadow: 0 0 4px 2px honeydew;
+        }
+        input:focus{
+            outline-color: white;
+            box-shadow: 0 0 3px 2px lightslategray;
+        }
+    </style>
+    <h2 style="text-align: center; color: dimgray">Create new user</h2>
+    <form action="http://localhost:8080/persons/create-new-person" method="post">
+        <p style="margin-bottom: auto"> Enter your name:</p>
+        <input style="width: 450px" type="text" name="name" required>
+        <p style="margin-bottom: auto"> Enter your surname:</p>
+        <input style="width: 450px" type="text" name="surname" required>
+        <p style="margin-bottom: auto"> Enter your age:</p>
+        <input style="width: 450px" type="number" min="18" name="age" required>
+        <p style="margin-bottom: auto"> Enter your phone number:</p>
+        <input style="width: 450px" type="text" name="phoneNumber" required>
+        <p style="margin-bottom: auto"> Enter your city of living:</p>
+        <input style="width: 450px" type="text" name="cityOfLiving"  required>
+        <br>
+        <p><input style="width: 100px; color: dimgray; border-radius: 3px;border-color: lightgrey" type="submit" value="Submit"/></p>
+    </form>
+</div>
+</body>
+</html>
