@@ -1,5 +1,9 @@
 package ru.netology.hibernate.service;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import ru.netology.hibernate.advice.exceptions.PersonNotFound;
 import ru.netology.hibernate.advice.response.HibernateResponse;
@@ -79,5 +83,17 @@ public class HibernateService {
             dto = mapper.mapListOfPersonToPersonDTO(persons.stream().collect(Collectors.toList()));
         }
         return dto;
+    }
+
+    public List<String> getRoles(String username) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+    }
+
+    public User getUser(String username) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return (User) authentication.getPrincipal();
     }
 }

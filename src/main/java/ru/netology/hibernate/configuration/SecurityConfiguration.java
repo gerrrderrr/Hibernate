@@ -1,37 +1,36 @@
 package ru.netology.hibernate.configuration;
 
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("admin").password("{noop}adminAdmin").authorities("read", "write")
-                .and()
-                .withUser("person").password("{noop}person").authorities("read");
+
+    @Bean
+    public PasswordEncoder encoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin()
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication()
+                .withUser("admin")
+                .password(encoder().encode("adminAdmin")).roles("READ", "WRITE", "DELETE")
                 .and()
-                .authorizeRequests().antMatchers("persons/create-new-person",
-                        "persons/create").permitAll()
+                .withUser("user")
+                .password(encoder().encode("userUser")).roles("READ")
                 .and()
-                .authorizeRequests().antMatchers("persons/all-users",
-                        "persons/by-city",
-                        "persons/by-age",
-                        "persons/by-name-surname").hasAuthority("read")
+                .withUser("author")
+                .password(encoder().encode("authorAuthor")).roles("WRITE")
                 .and()
-                .authorizeRequests().antMatchers("persons/update-phone",
-                        "persons/update-city",
-                        "persons/delete").hasAuthority("write")
-                .and()
-                .authorizeRequests().anyRequest().authenticated();
+                .withUser("cleaner")
+                .password(encoder().encode("cleanerCleaner")).roles("DELETE");
     }
 }
