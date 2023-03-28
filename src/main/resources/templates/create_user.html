@@ -22,7 +22,7 @@
         }
     </style>
     <h2 style="text-align: center; color: dimgray">Create new user</h2>
-    <form action="http://localhost:8080/persons/create-new-person" method="post">
+    <form th:action="@{/persons/create-new-person}" th:method="post">
         <p style="margin-bottom: auto"> Enter your name:</p>
         <input style="width: 450px" type="text" name="name" required>
         <p style="margin-bottom: auto"> Enter your surname:</p>
@@ -34,6 +34,7 @@
         <p style="margin-bottom: auto"> Enter your city of living:</p>
         <input style="width: 450px" type="text" name="cityOfLiving"  required>
         <br>
+        <input type="hidden" name="${_csrf.parameterName}" value="$_csrf.token"/>
         <p><input style="width: 100px; color: dimgray; border-radius: 3px;border-color: lightgrey" type="submit" value="Submit"/></p>
     </form>
 </div>
